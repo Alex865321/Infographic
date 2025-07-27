@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARK Invest: Charting the Course of Disruptive Innovation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: A top-down narrative infographic designed for scrolling. It starts with a high-level hook (ARK's philosophy), moves to comparative performance analysis (bar chart), then forward-looking growth potential (stat cards), followed by a critical risk insight (holdings overlap diagram), and concludes with actionable strategies (flowchart). This logical flow tells a complete story, from introduction to conclusion, making complex data digestible for a broad audience. -->
+    <!-- Visualization & Content Choices: 1. Key Stats -> Goal: Inform -> Large Text -> High impact for single numbers. 2. Since Inception Returns -> Goal: Compare -> Horizontal Bar Chart (Chart.js) -> Best for comparing values across categories (funds). 3. Thematic Growth (CAGR) -> Goal: Inform/Compare -> Grid of Stat Cards -> Visually engaging for multiple key stats. 4. Holdings Overlap -> Goal: Organize/Relationships -> HTML/CSS Diagram -> A Venn-like diagram is intuitive for showing overlap; built with HTML to avoid SVG. 5. Strategic Pathways -> Goal: Organize/Guide -> HTML/CSS Flowchart -> Best for representing a decision process. 6. ARKK Top Holdings -> Goal: Inform -> Donut Chart (Chart.js) -> Shows portfolio concentration effectively. All charts use Chart.js/Canvas. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 450px;
+        }
+        .donut-chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 350px;
+        }
+        .section-heading {
+            font-weight: 900;
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+            text-align: center;
+            color: #0f172a;
+            margin-bottom: 1rem;
+        }
+        @media (min-width: 768px) {
+            .section-heading {
+                font-size: 3rem;
+                line-height: 1;
+            }
+        }
+        .section-subheading {
+            text-align: center;
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+            color: #475569;
+            max-width: 48rem;
+            margin: 0 auto 3rem auto;
+        }
+    </style>
+</head>
+<body class="bg-slate-100">
+
+    <div class="max-w-7xl mx-auto bg-white shadow-xl">
+        
+        <!-- Header Section -->
+        <header class="bg-[#003f5c] text-white p-8 md:p-12 text-center">
+            <h1 class="text-4xl md:text-6xl font-black uppercase tracking-wide">ARK Invest</h1>
+            <p class="mt-4 text-xl md:text-2xl font-light text-slate-300">Charting the Course of Disruptive Innovation</p>
+        </header>
+
+        <main class="p-6 md:p-10 lg:p-16">
+
+            <!-- Section 1: The ARK Universe -->
+            <section class="mb-16 md:mb-24">
+                <h2 class="section-heading">The ARK Universe at a Glance</h2>
+                <p class="section-subheading">ARK's core philosophy is to invest in "disruptive innovation"—technologically enabled new products or services that could change how the world works. This high-conviction approach leads to concentrated, thematic portfolios.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-slate-100 p-6 rounded-lg">
+                        <p class="text-6xl font-black text-[#665191]">6</p>
+                        <p class="mt-2 text-lg font-semibold text-slate-700">Core Actively Managed ETFs</p>
+                    </div>
+                    <div class="bg-slate-100 p-6 rounded-lg">
+                        <p class="text-6xl font-black text-[#d45087]">7+</p>
+                        <p class="mt-2 text-lg font-semibold text-slate-700">Major Innovation Themes</p>
+                    </div>
+                    <div class="bg-slate-100 p-6 rounded-lg">
+                        <p class="text-6xl font-black text-[#ff7c43]">5+ Years</p>
+                        <p class="mt-2 text-lg font-semibold text-slate-700">Recommended Investment Horizon</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Performance Spotlight -->
+            <section class="mb-16 md:mb-24">
+                <h2 class="section-heading">A Volatile Journey</h2>
+                <p class="section-subheading">Long-term performance highlights the high-risk, high-reward nature of ARK's funds. While some have delivered exceptional annualized returns since their 2014 inception, they have also experienced periods of significant drawdowns. Past performance is not indicative of future results.</p>
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-xl text-center mb-4 text-slate-800">Annualized Returns Since Inception (NAV)</h3>
+                    <div class="chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: The Engine of Growth -->
+            <section class="mb-16 md:mb-24">
+                <h2 class="section-heading">The Engine of Growth</h2>
+                <p class="section-subheading">ARK's strategy is built on the projected expansion of key technology sectors. The following markets are forecasted to grow significantly, providing a fundamental basis for ARK's long-term objectives.</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                    <div class="bg-[#003f5c] text-white p-4 rounded-lg shadow-lg text-center">
+                        <p class="text-3xl md:text-4xl font-black">48.2%</p>
+                        <p class="text-sm md:text-base font-semibold mt-1">Deep Tech CAGR</p>
+                    </div>
+                    <div class="bg-[#665191] text-white p-4 rounded-lg shadow-lg text-center">
+                        <p class="text-3xl md:text-4xl font-black">19.6%</p>
+                        <p class="text-sm md:text-base font-semibold mt-1">Next-Gen Internet CAGR</p>
+                    </div>
+                    <div class="bg-[#d45087] text-white p-4 rounded-lg shadow-lg text-center">
+                        <p class="text-3xl md:text-4xl font-black">16.2%</p>
+                        <p class="text-sm md:text-base font-semibold mt-1">Fintech CAGR</p>
+                    </div>
+                    <div class="bg-[#f95d6a] text-white p-4 rounded-lg shadow-lg text-center">
+                        <p class="text-3xl md:text-4xl font-black">15.1%</p>
+                        <p class="text-sm md:text-base font-semibold mt-1">Robotics CAGR</p>
+                    </div>
+                    <div class="bg-[#ff7c43] text-white p-4 rounded-lg shadow-lg text-center">
+                        <p class="text-3xl md:text-4xl font-black">9.4%</p>
+                        <p class="text-sm md:text-base font-semibold mt-1">Genomics CAGR</p>
+                    </div>
+                    <div class="bg-[#ffa600] text-white p-4 rounded-lg shadow-lg text-center">
+                        <p class="text-3xl md:text-4xl font-black">$1.8T</p>
+                        <p class="text-sm md:text-base font-semibold mt-1">Space Economy by 2035</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 4: Deconstructing the Portfolios -->
+            <section class="mb-16 md:mb-24">
+                <h2 class="section-heading">Deconstructing the Portfolios</h2>
+                <p class="section-subheading">A critical insight from the report is the significant overlap in key holdings across different ARK funds. This can increase portfolio concentration risk, as a downturn in a shared company could impact multiple ETFs simultaneously.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="font-bold text-xl text-center mb-4 text-slate-800">ARKK Top 10 Holdings Concentration</h3>
+                         <div class="donut-chart-container">
+                            <canvas id="holdingsDonutChart"></canvas>
+                        </div>
+                        <p class="text-center text-sm text-slate-500 mt-4">The top 10 holdings make up over 59% of the flagship ARKK ETF, illustrating the fund's concentrated, high-conviction strategy.</p>
+                    </div>
+                    <div class="bg-slate-100 p-6 rounded-lg min-h-[400px] flex flex-col justify-center items-center">
+                        <h3 class="font-bold text-xl text-center mb-6 text-slate-800">Key Holdings Overlap</h3>
+                        <div class="relative w-full h-64">
+                            <div class="absolute top-1/2 left-1/4 -translate-y-1/2 w-32 h-32 bg-[#665191]/50 rounded-full flex items-center justify-center text-white font-bold text-lg">ARKK</div>
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#d45087]/50 rounded-full flex items-center justify-center text-white font-bold text-lg">ARKW</div>
+                            <div class="absolute top-1/2 right-1/4 -translate-y-1/2 w-32 h-32 bg-[#ff7c43]/50 rounded-full flex items-center justify-center text-white font-bold text-lg">ARKQ</div>
+                            <div class="absolute top-1/2 left-[38%] -translate-x-1/2 -translate-y-1/2 text-center">
+                                <span class="px-2 py-1 bg-white rounded-full text-xs font-bold shadow">COIN</span>
+                            </div>
+                             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center mt-8">
+                                <span class="px-2 py-1 bg-white rounded-full text-xs font-bold shadow">PLTR</span>
+                            </div>
+                            <div class="absolute top-1/2 right-[38%] -translate-x-1/2 -translate-y-1/2 text-center">
+                                <span class="px-2 py-1 bg-white rounded-full text-xs font-bold shadow">TSLA</span>
+                            </div>
+                        </div>
+                        <p class="text-center text-sm text-slate-500 mt-4">Companies like Coinbase (COIN), Palantir (PLTR), and Tesla (TSLA) are common across multiple funds, reducing diversification.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 5: Strategic Pathways -->
+            <section>
+                <h2 class="section-heading">Strategic Pathways</h2>
+                <p class="section-subheading">The report suggests combining funds based on risk tolerance. Any combination should be approached with a long-term perspective to navigate the inherent volatility of disruptive innovation.</p>
+                <div class="space-y-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-2xl font-bold text-[#d45087]">Aggressive Growth</h3>
+                        <p class="text-slate-600 mt-2 mb-4">For maximum exposure to broad technological shifts. High risk.</p>
+                        <div class="flex flex-wrap gap-4 items-center">
+                            <span class="px-4 py-2 rounded-full bg-[#665191] text-white font-bold">ARKK</span>
+                            <span class="text-2xl font-light text-slate-400">+</span>
+                            <span class="px-4 py-2 rounded-full bg-[#d45087] text-white font-bold">ARKW</span>
+                             <span class="text-2xl font-light text-slate-400">+</span>
+                            <span class="px-4 py-2 rounded-full bg-[#f95d6a] text-white font-bold">ARKF</span>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-2xl font-bold text-[#ff7c43]">Targeted Thematic</h3>
+                        <p class="text-slate-600 mt-2 mb-4">For strong conviction in specific sectors like robotics and genomics.</p>
+                        <div class="flex flex-wrap gap-4 items-center">
+                            <span class="px-4 py-2 rounded-full bg-[#ff7c43] text-white font-bold">ARKQ</span>
+                            <span class="text-2xl font-light text-slate-400">+</span>
+                            <span class="px-4 py-2 rounded-full bg-[#ffa600] text-white font-bold">ARKG</span>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-2xl font-bold text-[#003f5c]">Emerging Frontier</h3>
+                        <p class="text-slate-600 mt-2 mb-4">For very high risk tolerance, targeting the speculative digital asset space.</p>
+                        <div class="flex flex-wrap gap-4 items-center">
+                            <span class="px-4 py-2 rounded-full bg-[#003f5c] text-white font-bold">ARKB</span>
+                            <span class="text-2xl font-light text-slate-400">and/or</span>
+                            <span class="px-4 py-2 rounded-full bg-[#2f4b7c] text-white font-bold">ARKD</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Footer / Disclaimer -->
+        <footer class="bg-slate-800 text-slate-400 p-8 mt-16 md:mt-24">
+            <p class="text-center text-xs">
+                <strong>Disclaimer:</strong> This infographic is for informational purposes only, based on the source report. Past performance is not indicative of future results. Investing in disruptive innovation involves a high degree of risk, including the potential for significant loss. Consult with a qualified financial advisor before making any investment decisions.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const wrapLabel = (label) => {
+            const maxLen = 16;
+            if (label.length <= maxLen) return label;
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLen) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        };
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            }
+            return label;
+        };
+
+        const performanceData = {
+            labels: ['ARKW', 'ARKQ', 'ARKF', 'ARKK', 'ARKX', 'IZRL', 'ARKG', 'PRNT'],
+            returns: [22.8, 15.8, 15.5, 14.29, 4.2, 4.9, 2.5, 1.4]
+        };
+
+        const ctxPerformance = document.getElementById('performanceChart').getContext('2d');
+        new Chart(ctxPerformance, {
+            type: 'bar',
+            data: {
+                labels: performanceData.labels,
+                datasets: [{
+                    label: 'Since Inception Annualized Return (%)',
+                    data: performanceData.returns,
+                    backgroundColor: ['#2f4b7c', '#665191', '#a05195', '#d45087', '#f95d6a', '#ff7c43', '#ffa600', '#003f5c'],
+                    borderColor: '#ffffff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Annualized Return (%)'
+                        }
+                    }
+                }
+            }
+        });
+
+        const holdingsData = {
+            labels: ['Tesla Inc.', 'Coinbase Global Inc.', 'Roku Inc.', ['CRISPR Therapeutics', 'AG'], 'Roblox Corp.', 'Other Top 5', 'Other Holdings'],
+            weights: [9.9, 7.6, 6.6, 6.5, 6.2, 23.0, 40.2]
+        };
+
+        const ctxHoldings = document.getElementById('holdingsDonutChart').getContext('2d');
+        new Chart(ctxHoldings, {
+            type: 'doughnut',
+            data: {
+                labels: holdingsData.labels.map(l => Array.isArray(l) ? l.join(' ') : l),
+                datasets: [{
+                    data: holdingsData.weights,
+                    backgroundColor: ['#003f5c', '#665191', '#d45087', '#f95d6a', '#ff7c43', '#ffa600', '#e2e8f0'],
+                    borderColor: '#ffffff',
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 15,
+                            padding: 15,
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                if (data.labels.length && data.datasets.length) {
+                                    return data.labels.map(function(label, i) {
+                                        const meta = chart.getDatasetMeta(0);
+                                        const style = meta.controller.getStyle(i);
+                                        return {
+                                            text: `${label}: ${data.datasets[0].data[i]}%`,
+                                            fillStyle: style.backgroundColor,
+                                            strokeStyle: style.borderColor,
+                                            lineWidth: style.borderWidth,
+                                            hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                                            index: i
+                                        };
+                                    });
+                                }
+                                return [];
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback,
+                            label: function(context) {
+                                return ` ${context.parsed.toFixed(1)}%`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
